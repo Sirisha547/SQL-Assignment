@@ -104,18 +104,22 @@ select * from  note where note_creation_date='2019-01-31'
 select * from category where category_creation_date>'2019-01-22'
 
 --4.Fetch all category details which belongs to note with note id=1.
---select * from NoteCategory where note_id=1
-select * from category inner join note on  category.category_id = note.note_id where note.note_id=1
+select * from category
+select * from note
+select * from category where category_creator = (select userid from note where note_id = 1)
 
 --5.Fetch all the Notes from the Note table with userId=112244
 select * from note where userid = 112244
 
 --6.Fetch all the Notes from the Note table for category_id=1.
-select * from note inner join category on note.note_id=category.category_id where category_id =1
+select * from note
+select * from category
+select * from note where userid = (select category_creator from category where category_id = 1)
 
 --7.Fetch all the reminder details for note id=2.
---select * from notereminder where note_id=2
-select * from Reminder inner join note on reminder.reminder_id=note.note_id where note_id =2
+select * from reminder
+select * from note
+select * from reminder where reminder_creator = (select userid from note where note_id = 2)
 
 --8.Write a query to change the note_status to ‘Completed’ with note Id=3.
 update note set note_status='Completed' where note_id = 3
@@ -123,10 +127,10 @@ select * from note
 
 --9.Write a query to set a reminder of type ‘Personal Reminders’ for Note with note id=1. 
 --[Find reminder id based upon reminder_type]
+select * from note
+select * from reminder
 update Reminder set reminder_type='personal reminders' where reminder_creator=(select userid from note where note_id = 1)
 select * from Reminder
-
-
 
 --10.Write a query to remove all reminders from Note with note_id=2.
 delete  from NoteReminder where note_id=2
